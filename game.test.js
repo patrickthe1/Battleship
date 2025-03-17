@@ -11,14 +11,11 @@ describe('Game', () => {
         ship1 = new Ship(3); // Create a new ship of length 3 for Player 1
         ship2 = new Ship(2); // Create a new ship of length 2 for Player 2
         
-        // Place ship1 on Player 1's board (currentPlayer starts as player1)
-        game.placeShip(ship1, [0, 0]); 
+        // Place ships on the respective player's boards directly
+        game.placeShip(ship1, [0, 0], game.player1); 
+        game.placeShip(ship2, [1, 1], game.player2);
         
-        // After the above, currentPlayer is now player2
-        // Place ship2 on Player 2's board
-        game.placeShip(ship2, [1, 1]); 
-        
-        // Reset currentPlayer to player1 for tests
+        // Ensure currentPlayer is player1 for tests
         game.currentPlayer = game.player1;
         game.opponent = game.player2;
     });
@@ -41,27 +38,23 @@ describe('Game', () => {
     });
 
     test('should switch turns after an attack', () => {
-        game.attack([1, 1]); // Player 1 attacks
+        game.attack([0, 0]); // Player 1 attacks an empty cell (miss)
         expect(game.currentPlayer).toBe(game.player2); // Check that the current player is now Player 2
+
+        game.attack([0, 1]); // Player 2 attacks an empty cell (miss)
+        expect(game.currentPlayer).toBe(game.player1); // Check that the current player is now Player 1
     });
 
-    test('should declare a winner when all their opponent\'s ship\'s are sunk', () => {
-        // First, let's make sure we understand the ship positions:
-        // ship1 (length 3) is at [0,0], [0,1], [0,2] on Player 1's board
-        // ship2 (length 2) is at [1,1], [1,2] on Player 2's board
-        
+    test('should declare a winner when all their opponent\'s ships are sunk', () => {
         // Player 1 attacks ship2 at [1,1]
         game.attack([1, 1]);
         
-        // Player 2 attacks ship1 at [0,0]
-        game.attack([0, 0]);
+        // Player 2 attacks (should miss)
+        game.attack([0, 1]);
         
-        // Player 1 attacks ship2 at [1,2] - this should sink ship2
+        // Player 1 attacks ship2 at [1,2] - this should sink ship2 and win
+        const result = game.attack([1, 2]);
         
-        
-        const result = game.attack([1, 2]);;
-        
-       
         expect(result).toBe('Player 1 wins!');
     });
 });

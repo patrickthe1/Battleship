@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battleship Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <header>
+            <h1>Battleship</h1>
+            <div class="game-status" id="game-status">Place your ships to start the game</div>
+        </header>
+
+        <div class="game-controls controls">
+            <button id="start-game">Start Game</button>
+            <button id="reset-game">Reset Game</button>
+        </div>
+        
+        <div class="boards-container">
+            <div class="board-container">
+                <h2>Your Fleet</h2>
+                <div class="board" id="player-board"></div>
+                <div class="ships-placement">
+                    <div id="ships-container" class="ships-container">
+                        <!-- Ships for placement will be generated here -->
+                    </div>
+                    <div class="controls">
+                        <button id="rotate-ship">Rotate Ship</button>
+                        <button id="random-placement">Random Placement</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="board-container">
+                <h2>Enemy Waters</h2>
+                <div class="board" id="computer-board"></div>
+                <div class="hit-status" id="hit-status"></div>
+            </div>
+        </div>
+        
+        <div class="ships-status">
+            <div class="ships-status-container">
+                <div class="ships-status-title">Your Ships</div>
+                <ul id="player-ships" class="ships-status-list">
+                    <!-- Player ships status will be displayed here -->
+                </ul>
+            </div>
+            
+            <div class="ships-status-container">
+                <div class="ships-status-title">Enemy Ships</div>
+                <ul id="computer-ships" class="ships-status-list">
+                    <!-- Computer ships status will be displayed here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="ui.js"></script>
+</body>
+</html> 

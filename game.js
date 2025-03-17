@@ -1,4 +1,4 @@
-import Player from './player';
+import Player from './player.js';
 
 class Game {
     constructor(player1Name, player2Name) {
@@ -20,30 +20,33 @@ class Game {
     }
 
     attack(coordinates) {
-        // Store who the attacker is before we potentially switch turns
-        const attacker = this.currentPlayer;
-        
+        // Attack the opponent's board
         const result = this.currentPlayer.attack(this.opponent, coordinates);
         
-        // Check for win condition using the attacker's name
-        if (this.opponent.gameboard.allShipsSunk()) {
-            return `${attacker.name} wins!`;
+        // Check for win condition only if the result indicates a ship was hit and potentially sunk
+        if (result === 'hit' || result === 'sunk') {
+            if (this.opponent.gameboard.allShipsSunk()) {
+                return `${this.currentPlayer.name} wins!`;
+            }
         }
         
-        this.switchTurn();
+        // Only switch turns after checking win condition and if the attack wasn't already attacked
+        if (result !== 'already attacked') {
+            this.switchTurn();
+        }
+        
         return result;
     }
 
-    placeShip(ship, coordinates) {
-        // The key issue: we need to specify which player's board to place the ship on
-        if (this.currentPlayer === this.player1) {
-            this.player1.placeShip(ship, coordinates);
+    // This method accepts a player parameter to specify which player's board to place the ship on
+    placeShip(ship, coordinates, player = null) {
+        // If player is specified, place ship on that player's board
+        if (player) {
+            player.placeShip(ship, coordinates);
         } else {
-            this.player2.placeShip(ship, coordinates);
+            // Otherwise use currentPlayer
+            this.currentPlayer.placeShip(ship, coordinates);
         }
-        
-        // Switch turns after placing a ship
-        this.switchTurn();
     }
 }
 
